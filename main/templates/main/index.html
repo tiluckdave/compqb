@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home | QB
+{% endblock title %}
+
+{% block body %}
+{% load humanize %}
+{% load socialaccount %}
+<div class="container">
+  <div class="my-5">
+    <form method="GET" action="/search" class="d-flex mx-0 mx-md-2 mb-2 mb-md-0">
+      <div class="input-group">
+        <input type="search" class="form-control" placeholder="Search by question or subject" aria-label="Search user"
+          name="q" id="q" aria-describedby="button-addon2" />
+        <button id="searchbtn" class="btn btn-outline-primary" type="submit" id="button-addon2">
+          Search
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <div class="row">
+      <div class="col-6">
+        <h2>All Questions</h2>
+      </div>
+      <div class="col-6 d-flex flex-row-reverse align-items-center">
+        <button type="button" class="btn btn-primary my-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Add Question
+        </button>
+      </div>
+    </div>
+    <div class="dropdown-divider"></div>
+    {% for question in questions %}
+    <div class="card my-4">
+      <div class="card-header">
+        Subject ・ <strong>{{question.subject}}</strong>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{question.question}}</h5>
+        <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#collapseHint{{forloop.counter}}"
+          aria-expanded="false" aria-controls="collapseHint{{forloop.counter}}">
+          Hint
+        </a>
+        <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#collapseAnswer{{forloop.counter}}"
+          aria-expanded="false" aria-controls="collapseAnswer{{forloop.counter}}">
+          Answer
+        </a>
+        <div class="collapse mt-3" id="collapseHint{{forloop.counter}}">
+          <div class="card card-body">
+            <h6>Hint</h6>
+            {% if question.hint %}
+            {{question.hint}}
+            {% else %}
+            <span class="text-danger">Hint Not Available</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="collapse mt-3" id="collapseAnswer{{forloop.counter}}">
+          <div class="card card-body">
+            <h6>Answer</h6>
+            {{question.answer}}
+          </div>
+        </div>
+      </div>
+      <div class="card-footer fst-italic">
+        by <strong>{{question.auther.first_name}} {{question.auther.last_name}}</strong> ・ <strong><small
+            class="text-muted">{{question.timestamp|naturaltime}}</small></strong>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="my-5">
+    {% if questions.has_previous %}
+    <a class="btn btn-primary" href="?page={{questions.number|add:" -1"}}">Previous</a>
+    {% else %}
+    <a class="btn btn-primary disabled" href="/">Previous</a>
+    {% endif %}
+    {% if questions.has_next %}
+    <a class="btn btn-primary float-end" href="?page={{questions.number|add:" 1"}}">Next</a>
+    {% else %}
+    <a class="btn btn-primary float-end disabled" href="/">Next</a>
+    {% endif %}
+  </div>
+
+</div>
+
+<footer class="footer d-block mt-auto py-3 bg-light ">
+  <div class="container text-center">
+    <p class="card-text">Made By Tilak Dave</p>
+  </div>
+</footer>
+
+
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Question</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/" method='POST'>{% csrf_token %}
+
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput1" required name="question">
+            <label for="floatingInput1">Question</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput2" name="hint">
+            <label for="floatingInput2">Hint (optional)</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput3" required name="answer">
+            <label for="floatingInput3">Answer</label>
+          </div>
+          <div class="form-floating mb-3">
+            <select class="form-select" id="floatingInput4" required name="subject">
+              <option value="Information Management">Information Management</option>
+              <option value="Relational Database Management System">Relational Database Management System</option>
+              <option value="Computer Network">Computer Network</option>
+            </select>
+            <label for="floatingInput4">Subject</label>
+          </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        {% if request.user.is_authenticated %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+        {% else %}
+        <a class="btn btn-primary" href="{% provider_login_url 'google' %}" role="button">Login with Google</a>
+        {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

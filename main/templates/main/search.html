@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Search | QB{% endblock title %}
+
+
+{% block body %}
+{% load humanize %}
+<div class="container">
+
+
+<div class="my-2">
+<h2>Search Results</h2>
+<div class="dropdown-divider"></div>
+
+{% if questions|length < 1 %}
+
+No Search Results Found
+
+{% else %}
+
+
+
+
+{% for question in questions %}
+<div class="card my-4">
+<div class="card-header">
+Subject ・ <strong>{{question.subject}}</strong>
+</div>
+  <div class="card-body">
+    <h5 class="card-title">{{question.question}}</h5>
+  <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#collapseHint{{forloop.counter}}" aria-expanded="false" aria-controls="collapseHint{{forloop.counter}}">
+    Hint
+  </a>
+  <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#collapseAnswer{{forloop.counter}}" aria-expanded="false" aria-controls="collapseAnswer{{forloop.counter}}">
+    Answer
+  </a>
+<div class="collapse mt-3" id="collapseHint{{forloop.counter}}">
+  <div class="card card-body">
+    <h6>Hint</h6>
+  {% if question.hint %}
+    {{question.hint}}
+  {% else %}
+  <span class="text-danger">Hint Not Available</span>
+  {% endif %}
+  </div>
+</div>
+<div class="collapse mt-3" id="collapseAnswer{{forloop.counter}}">
+  <div class="card card-body">
+    <h6>Answer</h6>
+    {{question.answer}}
+  </div> 
+</div>
+  </div>
+  <div class="card-footer fst-italic">
+    by <strong>{{question.auther.first_name}} {{question.auther.last_name}}</strong> ・ <strong><small class="text-muted">{{question.timestamp|naturaltime}}</small></strong>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+<div class="my-5">
+  {% if questions.has_previous %}
+    <a class="btn btn-primary" href="?page={{questions.number|add:"-1"}}">Previous</a>
+  {% else %}
+  <a class="btn btn-primary disabled" href="/">Previous</a>
+  {% endif %}
+  {% if questions.has_next %}
+    <a class="btn btn-primary float-end" href="?page={{questions.number|add:"1"}}">Next</a>
+    {% else %}
+    <a class="btn btn-primary float-end disabled" href="/">Next</a>
+  {% endif %}
+{% endif %}
+</div>
+</div>
+{% endblock body %}
