@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-
+{% load static %}
+{% load pwa %}
 <head>
 
   <meta charset="utf-8">
@@ -8,7 +9,7 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-
+  {% progressive_web_app_meta %}
   <title>{% block title %}{% endblock title %}</title>
 </head>
 
@@ -16,7 +17,7 @@
   {% load socialaccount %}
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'home' %}">COMP QB</a>
+      <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'q.png' %}" width="50px" alt=""></a>
         
         
 

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+     'pwa',
 ]
 
 MIDDLEWARE = [
@@ -151,6 +152,27 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+
+
+PWA_APP_NAME = 'Question Bank'
+PWA_APP_DESCRIPTION = 'Question Bank for Computer Department'
+PWA_APP_THEME_COLOR = '#F8F9FA'
+PWA_APP_BACKGROUND_COLOR = '#F8F9FA'
+PWA_APP_ICONS = [
+    {
+        "src": "/static/q.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        "src": "/static/q.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    }
+]
+PWA_APP_DEBUG_MODE = False
 try:
     from .local_settings import *
 except ImportError:
