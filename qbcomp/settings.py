@@ -160,14 +160,14 @@ PWA_APP_THEME_COLOR = '#F8F9FA'
 PWA_APP_BACKGROUND_COLOR = '#F8F9FA'
 PWA_APP_ICONS = [
     {
-        "src": "/static/q.png",
+        "src": "/static/Q.png",
         "sizes": "512x512",
         "type": "image/png"
     }
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        "src": "/static/q.png",
+        "src": "/static/Q.png",
         "sizes": "512x512",
         "type": "image/png"
     }
