@@ -1,0 +1,1 @@
+web: gunicorn qbcomp.wsgi --log-file -
